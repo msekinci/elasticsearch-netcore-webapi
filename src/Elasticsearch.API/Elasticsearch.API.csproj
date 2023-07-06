@@ -16,8 +16,10 @@
 
   <ItemGroup>
     <None Remove="Extensions\" />
+    <None Remove="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Extensions\" />
+    <Folder Include="Models\" />
   </ItemGroup>
 </Project>
