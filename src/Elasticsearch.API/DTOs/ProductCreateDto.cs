@@ -2,7 +2,7 @@
 
 namespace Elasticsearch.API.DTOs
 {
-    public record ProductCreateDto(string Name, decimal Price, int Stock, ProductFeatureDto Feature)
+    public record ProductCreateDto(string Name, decimal Price, int Stock, ProductFeatureDto? Feature)
 	{
 		public Product CreateProduct()
 		{

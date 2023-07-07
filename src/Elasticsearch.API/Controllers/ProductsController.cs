@@ -2,8 +2,6 @@
 using Elasticsearch.API.Services;
 using Microsoft.AspNetCore.Mvc;
 
-// For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace Elasticsearch.API.Controllers
 {
     public class ProductsController : BaseController
@@ -19,6 +17,12 @@ namespace Elasticsearch.API.Controllers
         public async Task<IActionResult> Save(ProductCreateDto request)
         {
             return CreateActionResult(await _productService.SaveAsync(request));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            return CreateActionResult(await _productService.GetAllAsync());
         }
     }
 }
