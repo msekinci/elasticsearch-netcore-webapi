@@ -1,4 +1,4 @@
-﻿using System.Collections.Immutable;
+﻿using System.Net;
 using Elasticsearch.API.DTOs;
 using Elasticsearch.API.Repositories;
 
@@ -24,7 +24,7 @@ namespace Elasticsearch.API.Services
                           System.Net.HttpStatusCode.InternalServerError);
             }
 
-            return ResponseDto<ProductDto>.Success(response.CreateDto(), System.Net.HttpStatusCode.Created);
+            return ResponseDto<ProductDto>.Success(response.CreateDto(), HttpStatusCode.Created);
         }
 
         public async Task<ResponseDto<List<ProductDto>>> GetAllAsync()
@@ -38,11 +38,22 @@ namespace Elasticsearch.API.Services
                                         x.Name,
                                         x.Price,
                                         x.Stock,
-                                        x.Feature is null ? null : new ProductFeatureDto(x.Feature!.Width, x.Feature!.Height, x.Feature!.Color)))
+                                        x.Feature is null ? null : new ProductFeatureDto(x.Feature!.Width, x.Feature!.Height, x.Feature!.Color.ToString())))
                                     .ToList();
 
-            return ResponseDto<List<ProductDto>>.Success(productListDto, System.Net.HttpStatusCode.OK);
+            return ResponseDto<List<ProductDto>>.Success(productListDto, HttpStatusCode.OK);
+        }
 
+        public async Task<ResponseDto<ProductDto>> GetByIdAsync(string id)
+        {
+            var response = await _productRepository.GetByIdAsync(id);
+
+            if (response == null)
+            {
+                return ResponseDto<ProductDto>.Fail("Product was not found!", HttpStatusCode.NotFound);
+            }
+
+            return ResponseDto<ProductDto>.Success(response.CreateDto(), HttpStatusCode.OK);
         }
     }
 }

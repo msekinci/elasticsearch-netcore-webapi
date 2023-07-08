@@ -1,3 +1,10 @@
+/Users/mehmetserkanekinci/Desktop/msekinci/elasticsearch-netcore-webapi/src/Elasticsearch.API/obj/Debug/net7.0/Elasticsearch.API.csproj.AssemblyReference.cache
+/Users/mehmetserkanekinci/Desktop/msekinci/elasticsearch-netcore-webapi/src/Elasticsearch.API/obj/Debug/net7.0/Elasticsearch.API.GeneratedMSBuildEditorConfig.editorconfig
+/Users/mehmetserkanekinci/Desktop/msekinci/elasticsearch-netcore-webapi/src/Elasticsearch.API/obj/Debug/net7.0/Elasticsearch.API.AssemblyInfoInputs.cache
+/Users/mehmetserkanekinci/Desktop/msekinci/elasticsearch-netcore-webapi/src/Elasticsearch.API/obj/Debug/net7.0/Elasticsearch.API.AssemblyInfo.cs
+/Users/mehmetserkanekinci/Desktop/msekinci/elasticsearch-netcore-webapi/src/Elasticsearch.API/obj/Debug/net7.0/Elasticsearch.API.csproj.CoreCompileInputs.cache
+/Users/mehmetserkanekinci/Desktop/msekinci/elasticsearch-netcore-webapi/src/Elasticsearch.API/obj/Debug/net7.0/Elasticsearch.API.MvcApplicationPartsAssemblyInfo.cs
+/Users/mehmetserkanekinci/Desktop/msekinci/elasticsearch-netcore-webapi/src/Elasticsearch.API/obj/Debug/net7.0/Elasticsearch.API.MvcApplicationPartsAssemblyInfo.cache
 /Users/mehmetserkanekinci/Desktop/msekinci/elasticsearch-netcore-webapi/src/Elasticsearch.API/bin/Debug/net7.0/appsettings.Development.json
 /Users/mehmetserkanekinci/Desktop/msekinci/elasticsearch-netcore-webapi/src/Elasticsearch.API/bin/Debug/net7.0/appsettings.json
 /Users/mehmetserkanekinci/Desktop/msekinci/elasticsearch-netcore-webapi/src/Elasticsearch.API/bin/Debug/net7.0/Elasticsearch.API
@@ -12,13 +19,6 @@
 /Users/mehmetserkanekinci/Desktop/msekinci/elasticsearch-netcore-webapi/src/Elasticsearch.API/bin/Debug/net7.0/Swashbuckle.AspNetCore.Swagger.dll
 /Users/mehmetserkanekinci/Desktop/msekinci/elasticsearch-netcore-webapi/src/Elasticsearch.API/bin/Debug/net7.0/Swashbuckle.AspNetCore.SwaggerGen.dll
 /Users/mehmetserkanekinci/Desktop/msekinci/elasticsearch-netcore-webapi/src/Elasticsearch.API/bin/Debug/net7.0/Swashbuckle.AspNetCore.SwaggerUI.dll
-/Users/mehmetserkanekinci/Desktop/msekinci/elasticsearch-netcore-webapi/src/Elasticsearch.API/obj/Debug/net7.0/Elasticsearch.API.csproj.AssemblyReference.cache
-/Users/mehmetserkanekinci/Desktop/msekinci/elasticsearch-netcore-webapi/src/Elasticsearch.API/obj/Debug/net7.0/Elasticsearch.API.GeneratedMSBuildEditorConfig.editorconfig
-/Users/mehmetserkanekinci/Desktop/msekinci/elasticsearch-netcore-webapi/src/Elasticsearch.API/obj/Debug/net7.0/Elasticsearch.API.AssemblyInfoInputs.cache
-/Users/mehmetserkanekinci/Desktop/msekinci/elasticsearch-netcore-webapi/src/Elasticsearch.API/obj/Debug/net7.0/Elasticsearch.API.AssemblyInfo.cs
-/Users/mehmetserkanekinci/Desktop/msekinci/elasticsearch-netcore-webapi/src/Elasticsearch.API/obj/Debug/net7.0/Elasticsearch.API.csproj.CoreCompileInputs.cache
-/Users/mehmetserkanekinci/Desktop/msekinci/elasticsearch-netcore-webapi/src/Elasticsearch.API/obj/Debug/net7.0/Elasticsearch.API.MvcApplicationPartsAssemblyInfo.cs
-/Users/mehmetserkanekinci/Desktop/msekinci/elasticsearch-netcore-webapi/src/Elasticsearch.API/obj/Debug/net7.0/Elasticsearch.API.MvcApplicationPartsAssemblyInfo.cache
 /Users/mehmetserkanekinci/Desktop/msekinci/elasticsearch-netcore-webapi/src/Elasticsearch.API/obj/Debug/net7.0/staticwebassets/msbuild.Elasticsearch.API.Microsoft.AspNetCore.StaticWebAssets.props
 /Users/mehmetserkanekinci/Desktop/msekinci/elasticsearch-netcore-webapi/src/Elasticsearch.API/obj/Debug/net7.0/staticwebassets/msbuild.build.Elasticsearch.API.props
 /Users/mehmetserkanekinci/Desktop/msekinci/elasticsearch-netcore-webapi/src/Elasticsearch.API/obj/Debug/net7.0/staticwebassets/msbuild.buildMultiTargeting.Elasticsearch.API.props
