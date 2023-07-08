@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using Elastic.Clients.Elasticsearch;
 using Elasticsearch.API.DTOs;
 using Elasticsearch.API.Repositories;
 
@@ -23,7 +24,7 @@ namespace Elasticsearch.API.Services
             {
                 return ResponseDto<ProductDto>
                     .Fail(new List<string> { "Kayıt esnasında bir hata meydana geldi." },
-                          System.Net.HttpStatusCode.InternalServerError);
+                          HttpStatusCode.InternalServerError);
             }
 
             return ResponseDto<ProductDto>.Success(response.CreateDto(), HttpStatusCode.Created);
@@ -62,14 +63,15 @@ namespace Elasticsearch.API.Services
         {
             var response = await _productRepository.UpdateAsync(updateProduct);
 
-            if (!response!.IsValid)
+            if (!response!.IsValidResponse)
             {
-                if (response.Result == Nest.Result.NotFound)
+                if (response!.Result == Result.NotFound)
                 {
                     return ResponseDto<bool>.Fail("Product was not found!", HttpStatusCode.NotFound);
                 }
 
-                _logger.LogError(response.OriginalException, response.ServerError.Error.ToString());
+                response.TryGetOriginalException(out Exception? exception);
+                _logger.LogError(exception, response.ElasticsearchServerError.Error.ToString());
                 return ResponseDto<bool>.Fail("Product was not updated!", HttpStatusCode.InternalServerError);
             }
 
@@ -80,14 +82,15 @@ namespace Elasticsearch.API.Services
         {
             var response = await _productRepository.DeleteAsync(id);
 
-            if (!response!.IsValid)
+            if (!response!.IsValidResponse)
             {
-                if (response.Result == Nest.Result.NotFound)
+                if (response.Result == Result.NotFound)
                 {
                     return ResponseDto<bool>.Fail("Product was not found!", HttpStatusCode.NotFound);
                 }
 
-                _logger.LogError(response.OriginalException, response.ServerError.Error.ToString());
+                response.TryGetOriginalException(out Exception? exception);
+                _logger.LogError(exception, response.ElasticsearchServerError.Error.ToString());
                 return ResponseDto<bool>.Fail("Product was not deleted!", HttpStatusCode.InternalServerError);
             }
 
