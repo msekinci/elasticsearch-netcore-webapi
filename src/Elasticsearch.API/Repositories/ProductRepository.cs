@@ -52,20 +52,20 @@ namespace Elasticsearch.API.Repositories
             return response.Source;
         }
 
-        public async Task<bool> UpdateAsync(ProductUpdateDto updateProduct) {
+        public async Task<UpdateResponse<Product>?> UpdateAsync(ProductUpdateDto updateProduct) {
             var response = await _client
                 .UpdateAsync<Product, ProductUpdateDto>(updateProduct.id,
                     x => x.Index(indexName).Doc(updateProduct));
 
-            return response.IsValid;
+            return response;
         }
 
-        public async Task<bool> DeleteAsync(string id)
+        public async Task<DeleteResponse> DeleteAsync(string id)
         {
             var response = await _client
                 .DeleteAsync<Product>(id, x => x.Index(indexName));
 
-            return response.IsValid;
+            return response;
         }
     }
 }

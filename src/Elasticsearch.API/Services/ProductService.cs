@@ -5,12 +5,14 @@ using Elasticsearch.API.Repositories;
 namespace Elasticsearch.API.Services
 {
     public class ProductService
-	{
-		private readonly ProductRepository _productRepository;
+    {
+        private readonly ProductRepository _productRepository;
+        private readonly ILogger<ProductService> _logger;
 
-        public ProductService(ProductRepository productRepository)
+        public ProductService(ProductRepository productRepository, ILogger<ProductService> logger)
         {
             _productRepository = productRepository;
+            _logger = logger;
         }
 
         public async Task<ResponseDto<ProductDto>> SaveAsync(ProductCreateDto request)
@@ -60,21 +62,33 @@ namespace Elasticsearch.API.Services
         {
             var response = await _productRepository.UpdateAsync(updateProduct);
 
-            if (response)
+            if (!response!.IsValid)
             {
-                return ResponseDto<bool>.Success(true, HttpStatusCode.NoContent);
+                if (response.Result == Nest.Result.NotFound)
+                {
+                    return ResponseDto<bool>.Fail("Product was not found!", HttpStatusCode.NotFound);
+                }
+
+                _logger.LogError(response.OriginalException, response.ServerError.Error.ToString());
+                return ResponseDto<bool>.Fail("Product was not updated!", HttpStatusCode.InternalServerError);
             }
 
-            return ResponseDto<bool>.Fail("Product was not updated!", HttpStatusCode.InternalServerError);
+            return ResponseDto<bool>.Success(true, HttpStatusCode.NoContent);
         }
 
         public async Task<ResponseDto<bool>> DeleteAsync(string id)
         {
             var response = await _productRepository.DeleteAsync(id);
 
-            if (response)
+            if (!response!.IsValid)
             {
-                return ResponseDto<bool>.Success(true, HttpStatusCode.NoContent);
+                if (response.Result == Nest.Result.NotFound)
+                {
+                    return ResponseDto<bool>.Fail("Product was not found!", HttpStatusCode.NotFound);
+                }
+
+                _logger.LogError(response.OriginalException, response.ServerError.Error.ToString());
+                return ResponseDto<bool>.Fail("Product was not deleted!", HttpStatusCode.InternalServerError);
             }
 
             return ResponseDto<bool>.Fail("Product was not deleted!", HttpStatusCode.InternalServerError);
