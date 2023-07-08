@@ -67,6 +67,18 @@ namespace Elasticsearch.API.Services
 
             return ResponseDto<bool>.Fail("Product was not updated!", HttpStatusCode.InternalServerError);
         }
+
+        public async Task<ResponseDto<bool>> DeleteAsync(string id)
+        {
+            var response = await _productRepository.DeleteAsync(id);
+
+            if (response)
+            {
+                return ResponseDto<bool>.Success(true, HttpStatusCode.NoContent);
+            }
+
+            return ResponseDto<bool>.Fail("Product was not deleted!", HttpStatusCode.InternalServerError);
+        }
     }
 }
 
