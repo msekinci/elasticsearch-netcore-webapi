@@ -9,6 +9,7 @@ namespace Elasticsearch.API.Extensions
 		{
 			services.AddScoped<ProductService>();
 			services.AddScoped<ProductRepository>();
+			services.AddScoped<ECommerceRepository>();
 		}
 	}
 }

@@ -1,16 +1,16 @@
 ﻿using System.Collections.Immutable;
+using Elastic.Clients.Elasticsearch;
 using Elasticsearch.API.DTOs;
 using Elasticsearch.API.Models;
-using Nest;
 
 namespace Elasticsearch.API.Repositories
 {
     public class ProductRepository
 	{
-		private readonly ElasticClient _client;
+		private readonly ElasticsearchClient _client;
         private const string indexName = "products";
 
-        public ProductRepository(ElasticClient client)
+        public ProductRepository(ElasticsearchClient client)
         {
             _client = client;
         }
@@ -20,7 +20,7 @@ namespace Elasticsearch.API.Repositories
             newProduct.Created = DateTime.Now;
 
             var response = await _client.IndexAsync(newProduct, x => x.Index(indexName).Id(Guid.NewGuid().ToString()));
-            if (!response.IsValid) return null;
+            if (!response.IsValidResponse) return null;
 
             newProduct.Id = response.Id;
             return newProduct;
@@ -34,7 +34,7 @@ namespace Elasticsearch.API.Repositories
 
             foreach (var hits in result.Hits)
             {
-                hits.Source.Id = hits.Id;
+                hits!.Source!.Id = hits.Id;
             }
 
             return result.Documents.ToImmutableList();
@@ -43,19 +43,18 @@ namespace Elasticsearch.API.Repositories
         public async Task<Product?> GetByIdAsync(string id)
         {
             var response = await _client.GetAsync<Product>(id, x => x.Index(indexName));
-            if (!response.IsValid)
+            if (!response.IsValidResponse)
             {
                 return null;
             }
 
-            response.Source.Id = response.Id;
+            response!.Source!.Id = response.Id;
             return response.Source;
         }
 
         public async Task<UpdateResponse<Product>?> UpdateAsync(ProductUpdateDto updateProduct) {
             var response = await _client
-                .UpdateAsync<Product, ProductUpdateDto>(updateProduct.id,
-                    x => x.Index(indexName).Doc(updateProduct));
+                .UpdateAsync<Product, ProductUpdateDto>(indexName, updateProduct.id, x => x.Doc(updateProduct));
 
             return response;
         }
