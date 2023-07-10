@@ -34,7 +34,6 @@ namespace Elasticsearch.API.Services
         {
             var products = await _productRepository.GetAllAsync();
 
-
             var productListDto = products
                                     .Select(x => new ProductDto(
                                         x.Id,
