@@ -40,12 +40,7 @@ namespace Elasticsearch.API.Repositories
             };
             var result = await _client.SearchAsync<ECommerce>(s => s.Index(indexName).Query(termQuery));
 
-            foreach (var item in result.Hits)
-            {
-                item.Source!.Id = item.Id;
-            }
-
-            return result.Documents.ToImmutableList();
+            return ConvertImmutableList(result);
         }
 
         public async Task<ImmutableList<ECommerce>?> TermsQuery(List<string> customerFirstNameList)
@@ -71,14 +66,9 @@ namespace Elasticsearch.API.Repositories
                         .Field(f => f.CustomerFirstName
                             .Suffix("keyword"))
                             .Terms(new TermsQueryField(terms.AsReadOnly())))));
-            
 
-            foreach (var item in result.Hits)
-            {
-                item.Source!.Id = item.Id;
-            }
 
-            return result.Documents.ToImmutableList();
+            return ConvertImmutableList(result);
         }
 
         public async Task<ImmutableList<ECommerce>> PrefixQuery(string customerFullName)
@@ -92,6 +82,23 @@ namespace Elasticsearch.API.Repositories
                         .CaseInsensitive(true)
                         .Value(customerFullName))));
 
+            return ConvertImmutableList(result);
+        }
+
+        public async Task<ImmutableList<ECommerce>> RangeQuery(double fromPrice, double toPrice)
+        {
+            var result = await _client.SearchAsync<ECommerce>(s => s
+                .Index(indexName)
+                .Query(q => q
+                    .Range(r => r
+                        .NumberRange(nr => nr
+                            .Field(f => f.TaxfulTotalPrice).Gte(fromPrice).Lte(toPrice)))));
+
+            return ConvertImmutableList(result);
+        }
+
+        private ImmutableList<ECommerce> ConvertImmutableList(SearchResponse<ECommerce> result)
+        {
             foreach (var item in result.Hits)
             {
                 item.Source!.Id = item.Id;

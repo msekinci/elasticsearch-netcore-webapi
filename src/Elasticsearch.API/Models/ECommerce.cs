@@ -27,6 +27,9 @@ namespace Elasticsearch.API.Models.ECommerceModel
 
         [JsonPropertyName("products")]
         public Product[]? Products { get; set; }
+
+        [JsonPropertyName("taxful_total_price")]
+        public double TaxfulTotalPrice { get; set; }
     }
 
 	public class Product
