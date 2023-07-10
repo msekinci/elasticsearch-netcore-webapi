@@ -97,6 +97,29 @@ namespace Elasticsearch.API.Repositories
             return ConvertImmutableList(result);
         }
 
+        public async Task<ImmutableList<ECommerce>> MatchAllQuery()
+        {
+            var result = await _client.SearchAsync<ECommerce>(s => s
+                .Index(indexName)
+                .Query(q => q
+                    .MatchAll()));
+
+            return ConvertImmutableList(result);
+        }
+
+        public async Task<ImmutableList<ECommerce>> PaginationQuery(int page, int pageSize)
+        {
+            var pageFrom = (page - 1) * pageSize;
+            var result = await _client.SearchAsync<ECommerce>(s => s
+                .Index(indexName)
+                .Size(pageSize)
+                .From(pageFrom)
+                .Query(q => q
+                    .MatchAll()));
+
+            return ConvertImmutableList(result);
+        }
+
         private ImmutableList<ECommerce> ConvertImmutableList(SearchResponse<ECommerce> result)
         {
             foreach (var item in result.Hits)
