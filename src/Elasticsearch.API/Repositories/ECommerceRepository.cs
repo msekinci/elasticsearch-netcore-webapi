@@ -48,7 +48,8 @@ namespace Elasticsearch.API.Repositories
             return result.Documents.ToImmutableList();
         }
 
-        public async Task<ImmutableList<ECommerce>?> TermsQuery(List<string> customerFirstNameList) {
+        public async Task<ImmutableList<ECommerce>?> TermsQuery(List<string> customerFirstNameList)
+        {
             List<FieldValue> terms = new List<FieldValue>();
             customerFirstNameList.ForEach(x => terms.Add(x));
 
@@ -71,6 +72,25 @@ namespace Elasticsearch.API.Repositories
                             .Suffix("keyword"))
                             .Terms(new TermsQueryField(terms.AsReadOnly())))));
             
+
+            foreach (var item in result.Hits)
+            {
+                item.Source!.Id = item.Id;
+            }
+
+            return result.Documents.ToImmutableList();
+        }
+
+        public async Task<ImmutableList<ECommerce>> PrefixQuery(string customerFullName)
+        {
+            var result = await _client.SearchAsync<ECommerce>(s => s
+                .Index(indexName)
+                .Query(q => q
+                    .Prefix(p => p
+                        .Field(f => f
+                            .CustomerFullName.Suffix("keyword"))
+                        .CaseInsensitive(true)
+                        .Value(customerFullName))));
 
             foreach (var item in result.Hits)
             {

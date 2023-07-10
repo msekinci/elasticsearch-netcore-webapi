@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Elasticsearch.API.DTOs;
-using Elasticsearch.API.Models.ECommerceModel;
-using Elasticsearch.API.Repositories;
+﻿using Elasticsearch.API.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -31,6 +25,10 @@ namespace Elasticsearch.API.Controllers
             return Ok(await _repository.TermsQuery(customerFirstNames));
         }
 
+        [HttpGet]
+        public async Task<IActionResult> PrefixQuery(string customerFullName) {
+            return Ok(await _repository.PrefixQuery(customerFullName));
+        }
 
     }
 }
