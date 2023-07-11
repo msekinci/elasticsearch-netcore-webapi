@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
 using Elastic.Clients.Elasticsearch;
 using Elastic.Clients.Elasticsearch.QueryDsl;
+using Elasticsearch.API.Extensions;
 using Elasticsearch.API.Models.ECommerceModel;
 
 namespace Elasticsearch.API.Repositories
 {
-	public class ECommerceRepository
+    public class ECommerceRepository
 	{
 		private readonly ElasticsearchClient _client;
         private const string indexName = "kibana_sample_data_ecommerce";
@@ -40,7 +40,7 @@ namespace Elasticsearch.API.Repositories
             };
             var result = await _client.SearchAsync<ECommerce>(s => s.Index(indexName).Query(termQuery));
 
-            return ConvertImmutableList(result);
+            return result.ConvertImmutableListWithId();
         }
 
         public async Task<ImmutableList<ECommerce>?> TermsQuery(List<string> customerFirstNameList)
@@ -68,7 +68,7 @@ namespace Elasticsearch.API.Repositories
                             .Terms(new TermsQueryField(terms.AsReadOnly())))));
 
 
-            return ConvertImmutableList(result);
+            return result.ConvertImmutableListWithId();
         }
 
         public async Task<ImmutableList<ECommerce>> PrefixQuery(string customerFullName)
@@ -82,7 +82,7 @@ namespace Elasticsearch.API.Repositories
                         .CaseInsensitive(true)
                         .Value(customerFullName))));
 
-            return ConvertImmutableList(result);
+            return result.ConvertImmutableListWithId();
         }
 
         public async Task<ImmutableList<ECommerce>> RangeQuery(double fromPrice, double toPrice)
@@ -94,7 +94,7 @@ namespace Elasticsearch.API.Repositories
                         .NumberRange(nr => nr
                             .Field(f => f.TaxfulTotalPrice).Gte(fromPrice).Lte(toPrice)))));
 
-            return ConvertImmutableList(result);
+            return result.ConvertImmutableListWithId();
         }
 
         public async Task<ImmutableList<ECommerce>> MatchAllQuery()
@@ -104,7 +104,7 @@ namespace Elasticsearch.API.Repositories
                 .Query(q => q
                     .MatchAll()));
 
-            return ConvertImmutableList(result);
+            return result.ConvertImmutableListWithId();
         }
 
         public async Task<ImmutableList<ECommerce>> PaginationQuery(int page, int pageSize)
@@ -117,7 +117,7 @@ namespace Elasticsearch.API.Repositories
                 .Query(q => q
                     .MatchAll()));
 
-            return ConvertImmutableList(result);
+            return result.ConvertImmutableListWithId();
         }
 
         public async Task<ImmutableList<ECommerce>> WildcarQuery(string customerFullName)
@@ -131,7 +131,7 @@ namespace Elasticsearch.API.Repositories
                         .CaseInsensitive(true)
                         .Wildcard(customerFullName))));
 
-            return ConvertImmutableList(result);
+            return result.ConvertImmutableListWithId();
         }
 
         public async Task<ImmutableList<ECommerce>> FuzzyQuery(string customerFirstName)
@@ -146,18 +146,7 @@ namespace Elasticsearch.API.Repositories
                 .Sort(s => s
                     .Field(sf => sf.TaxfulTotalPrice, new FieldSort() { Order = SortOrder.Desc})));
 
-            return ConvertImmutableList(result);
-        }
-
-
-        private ImmutableList<ECommerce> ConvertImmutableList(SearchResponse<ECommerce> result)
-        {
-            foreach (var item in result.Hits)
-            {
-                item.Source!.Id = item.Id;
-            }
-
-            return result.Documents.ToImmutableList();
+            return result.ConvertImmutableListWithId();
         }
     }
 }
