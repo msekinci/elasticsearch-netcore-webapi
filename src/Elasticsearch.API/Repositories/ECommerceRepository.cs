@@ -134,6 +134,22 @@ namespace Elasticsearch.API.Repositories
             return ConvertImmutableList(result);
         }
 
+        public async Task<ImmutableList<ECommerce>> FuzzyQuery(string customerFirstName)
+        {
+            var result = await _client.SearchAsync<ECommerce>(s => s
+                .Index(indexName)
+                .Query(q => q
+                    .Fuzzy(fu => fu
+                        .Field(f => f.CustomerFirstName.Suffix("keyword"))
+                        .Value(customerFirstName)
+                        .Fuzziness(new Fuzziness(2))))
+                .Sort(s => s
+                    .Field(sf => sf.TaxfulTotalPrice, new FieldSort() { Order = SortOrder.Desc})));
+
+            return ConvertImmutableList(result);
+        }
+
+
         private ImmutableList<ECommerce> ConvertImmutableList(SearchResponse<ECommerce> result)
         {
             foreach (var item in result.Hits)
