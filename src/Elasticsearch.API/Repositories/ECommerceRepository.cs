@@ -120,6 +120,20 @@ namespace Elasticsearch.API.Repositories
             return ConvertImmutableList(result);
         }
 
+        public async Task<ImmutableList<ECommerce>> WildcarQuery(string customerFullName)
+        {
+            var result = await _client.SearchAsync<ECommerce>(s => s
+                .Index(indexName)
+                .Query(q => q
+                    .Wildcard(w => w
+                        .Field(f => f
+                            .CustomerFullName.Suffix("keyword"))
+                        .CaseInsensitive(true)
+                        .Wildcard(customerFullName))));
+
+            return ConvertImmutableList(result);
+        }
+
         private ImmutableList<ECommerce> ConvertImmutableList(SearchResponse<ECommerce> result)
         {
             foreach (var item in result.Hits)
