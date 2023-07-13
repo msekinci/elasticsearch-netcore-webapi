@@ -2,11 +2,8 @@
 
 namespace Elasticsearch.API.Models.ECommerceModel
 {
-    public class ECommerce
+    public class ECommerce : ElasticBase
 	{
-        [JsonPropertyName("_id")]
-        public string Id { get; set; } = null!;
-
 		[JsonPropertyName("customer_first_name")]
 		public string CustomerFirstName { get; set; } = null!;
 
